@@ -1,0 +1,106 @@
+// //Responsive
+// import logo from "../assets/img/logo.png";
+// import { Link } from "react-router-dom";
+// import useAuth from "../utils/useAuth";
+// import { useSelector } from "react-redux";
+
+// const Title = () => {
+//   return (
+//     <a href="/">
+//       <img
+//         className="h-28 p-2 transition-transform transform hover:scale-105"
+//         alt="LOGO"
+//         src={logo}
+//       ></img>
+//     </a>
+//   );
+// };
+
+// const Header = () => {
+//   const { isLoggedIn, userName, login, logout } = useAuth();
+
+//   const cartItems = useSelector((store) => store.cart.items);
+
+//   //Loaction Detection
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(success, error);
+//   } else {
+//     console.log("Geolocation not supported");
+//   }
+
+//   function success(position) {
+//     const latitude = position.coords.latitude;
+//     const longitude = position.coords.longitude;
+//     console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+//   }
+
+//   function error() {
+//     console.log("Unable to retrieve your location");
+//   }
+
+//   return (
+//     <div className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-6000 p-4 font-StylishFont md:flex flex-col">
+//       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
+//         <Title />
+
+//         <ul className="flex space-x-4 mt-4 md:mt-0">
+//           <li>
+//             <Link
+//               to="/"
+//               className="text-white hover:text-green-500 transition-colors duration-300"
+//             >
+//               Home
+//             </Link>
+//           </li>
+//           <Link
+//             to="/About"
+//             className="text-white hover:text-green-500 transition-colors duration-300"
+//           >
+//             <li>About</li>
+//           </Link>
+//           <li>
+//             <Link
+//               to="/Contact"
+//               className="text-white hover:text-green-500 transition-colors duration-300"
+//             >
+//               Contact
+//             </Link>
+//           </li>
+//           <li>
+//             <Link
+//               to="/Cart"
+//               className="text-white hover:text-green-500 transition-colors duration-300"
+//             >
+//               Cart- {cartItems.length} Items
+//             </Link>
+//           </li>
+//           <li>
+//             <Link
+//               to="/Instamart"
+//               className="text-white hover:text-green-500 transition-colors duration-300"
+//             >
+//               Instamart
+//             </Link>
+//           </li>
+//         </ul>
+//         {isLoggedIn ? (
+//           <button
+//             onClick={logout}
+//             className="bg-green-500 text-white hover:bg-green-400 px-4 py-2 rounded-md mt-4 md:mt-0"
+//           >
+//             Logout
+//           </button>
+//         ) : (
+//           <button
+//             onClick={login}
+//             className="bg-orange-500 text-white hover:bg-orange-400 px-4 py-2 rounded-md mt-4 md:mt-0"
+//           >
+//             Login
+//           </button>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Header;
