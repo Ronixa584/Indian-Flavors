@@ -161,7 +161,7 @@ const Header = () => {
           <div className="mt-4 md:mt-0 flex flex-wrap gap-4 justify-between items-center">
             <ul className="flex flex-wrap gap-4 justify-between items-center">
               <li>
-                <a className="flex gap-2" href="/About">
+                <Link className="flex gap-2" to="/About">
                   <span className="flex justify-center items-center">
                     <svg
                       viewBox="6 -1 12 25"
@@ -173,11 +173,11 @@ const Header = () => {
                     </svg>
                   </span>
                   About
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a className="flex gap-2" href="/Contact">
+                <Link className="flex gap-2" to="/Contact">
                   <span className="flex justify-center items-center">
                     <svg
                       viewBox="6 -1 12 25"
@@ -189,7 +189,7 @@ const Header = () => {
                     </svg>
                   </span>
                   Contact
-                </a>
+                </Link>
               </li>
 
               {isLoggedIn ? (
@@ -236,7 +236,7 @@ const Header = () => {
                 <div className="_1fmVk _30y3a">
                   <div>
                     <div className="_2CgXb">
-                      <a className="_1T-E4 flex gap-2" href="/cart">
+                      <Link className="_1T-E4 flex gap-2" to="/cart">
                         <span className="_3yZyp flex justify-center items-center">
                           <svg
                             className="_1GTCc _2MSid"
@@ -250,7 +250,7 @@ const Header = () => {
                           </svg>
                         </span>
                         <span>{cartItems.length} Cart</span>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
