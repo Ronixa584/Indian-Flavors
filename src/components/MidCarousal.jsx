@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Carousal1 } from "./Carousal";
 import { cities } from "../contants";
 import { apiContext } from "../utils/useRestaurantList";
+import Shimmer3 from "./Shimmer3";
 
 const MidCarousal = () => {
   const [carausal1data, setcarausal1data] = useState(null);
@@ -19,7 +20,7 @@ const { cityName } = useParams();
 
     const data = useContext(apiContext);
 
-    console.log("Im here :"+data);
+    //console.log("Im here :"+data);
 
   const sliderRef = useRef(null);
 
@@ -53,10 +54,10 @@ const { cityName } = useParams();
 
   
   if (carausal1data === null) {
-    return "Loading";
+    return <Shimmer3/>;
   }
   if (carausal1data === undefined) {
-    return "Loading";
+    return <Shimmer3/>;
   }
 
   return (
@@ -128,43 +129,9 @@ export const TopCarousal = () => {
 
       setcarausaldata(json?.data?.cards[9]?.card?.card);
      
-    //   setcarausaldata(
-    //     json?.data?.cards
-    //       ?.map((x) => x.card)
-    //       ?.find(
-    //         (x) =>
-    //           x &&
-    //           x.card["@type"] ===
-    //             "type.googleapis.com/swiggy.seo.widgets.v1.AppInstallLinks"
-    //       )?.card?.androidAppImage || null
-      //   );
-    //   setcarausaldata(
-    //     json?.data?.cards
-    //       ?.map((x) => x.card?.card) // Access card property first
-    //       ?.find(
-    //         (x) =>
-    //           x &&
-    //           x["@type"] ===
-    //             "type.googleapis.com/swiggy.seo.widgets.v1.AppInstallLinks"
-    //       )?.androidAppImage || null
-    //   );
-
-      console.log(json);
-      console.log(carausaldata);
+      // console.log(json);
+      // console.log(carausaldata);
   };
-
-//   // Set restaurant data
-//   const restaurantData =
-//     json?.data?.cards
-//       ?.map((x) => x.card)
-//       ?.find(
-//         (x) =>
-//           x &&
-//           x.card["@type"] ===
-//             "type.googleapis.com/swiggy.presentation.food.v2.Restaurant"
-//       )?.card?.info || null;
-//     setRestaurantNames(restaurantData);
-    
 
   if (carausaldata === null) {
     return "Loading";
@@ -186,4 +153,7 @@ export const TopCarousal = () => {
   );
 };
 
-// export default TopCarousal;
+
+
+
+

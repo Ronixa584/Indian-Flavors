@@ -51,7 +51,7 @@ const useRestaurantNames = ({ id_R, selectedCity }) => {
 
     // const apiUrl = `https://corsproxy.org/?https%3A%2F%2Fwww.swiggy.com%2Fdapi%2Fmenu%2Fpl%3Fpage-type%3DREGULAR_MENU%26complete-menu%3Dtrue%26lat%3D18.5204%26lng%3D73.8567%26restaurantId%3D${id_R}%26catalog_qa%3Dundefined%26submitAction%3DENTER`;
 
-    console.log(apiUrl);
+   // console.log(apiUrl);
     const data = await fetch(apiUrl);
     const json = await data.json();
     // console.log("Resturants Menu List :", json);

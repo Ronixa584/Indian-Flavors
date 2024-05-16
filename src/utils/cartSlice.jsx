@@ -1,32 +1,72 @@
+// import { createSlice } from "@reduxjs/toolkit";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+
+// const cartSlice = createSlice({
+//     name: 'cart',
+//     initialState: {
+//         items: [],
+//     },
+//     //Mapping between action and reducer function
+//     reducers: {
+//         //Here, state is initialstate and action is data which is coming
+//         addItem: (state, action) => {
+//             toast("Successfully Added in Cart! Add More..");
+//             state.items.push(action.payload);
+//         },
+//         removeItem: (state, action) => {
+//             state.items.pop();
+//         },
+//         clearCart: (state) => {
+//             state.items = [];
+//         },
+//     },
+// });
+
+// export const {addItem, removeItem, clearCart} = cartSlice.actions;
+
+// export default cartSlice.reducer;
+
 import { createSlice } from "@reduxjs/toolkit";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+// Helper function to save state to localStorage
+const saveStateToLocalStorage = (state) => {
+  localStorage.setItem("cartItems", JSON.stringify(state.items));
+};
+
+// Helper function to load state from localStorage
+const loadStateFromLocalStorage = () => {
+  const savedState = localStorage.getItem("cartItems");
+  return savedState ? JSON.parse(savedState) : [];
+};
+
 const cartSlice = createSlice({
-    name: 'cart',
-    initialState: {
-        items: [],
+  name: "cart",
+  initialState: {
+    items: loadStateFromLocalStorage(),
+  },
+  reducers: {
+    addItem: (state, action) => {
+      toast("Successfully Added in Cart! Add More..");
+      state.items.push(action.payload);
+      saveStateToLocalStorage(state);
     },
-    //Mapping between action and reducer function
-    reducers: {
-        //Here, state is initialstate and action is data which is coming
-        addItem: (state, action) => {
-            toast("Successfully Added in Cart! Add More..");
-            state.items.push(action.payload);
-        },
-        removeItem: (state, action) => {
-            state.items.pop();
-        },
-        clearCart: (state) => {
-            state.items = [];
-        },
+    removeItem: (state, action) => {
+      state.items.pop();
+      saveStateToLocalStorage(state);
     },
+    clearCart: (state) => {
+      state.items = [];
+      saveStateToLocalStorage(state);
+    },
+  },
 });
 
-export const {addItem, removeItem, clearCart} = cartSlice.actions;
+export const { addItem, removeItem, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
-
 
 //Why this such type of export
 // So, i backend it stores slices as

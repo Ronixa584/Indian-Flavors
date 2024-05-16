@@ -1,22 +1,23 @@
-//Responsive
 import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white p-6">
-      <div className="container mx-auto">
+    <footer className="bg-gray-800 text-white py-8">
+      <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:justify-between">
-          <div className="mb-6 md:mb-0">
-            <h2 className="text-2xl font-bold">FOOD KINGDOM</h2>
-            <p className="mt-2">Delicious Food Delivered to Your Doorstep</p>
+          <div className="mb-6 md:mb-0 md:w-1/3">
+            <h2 className="text-2xl font-bold">Indian Flavours</h2>
+            <p className="mt-2 text-gray-400">
+              Delicious Food Delivered to Your Doorstep
+            </p>
           </div>
-          <div className="md:ml-8">
+          <div className="mb-6 md:mb-0 md:w-1/3">
             <h3 className="text-lg font-semibold mb-2">Links</h3>
-            <ul>
+            <ul className="text-gray-400">
               <li className="mb-1">
                 <a
                   href="#"
-                  className="hover:text-gray-500 transition duration-300"
+                  className="hover:text-white transition duration-300"
                 >
                   Home
                 </a>
@@ -24,7 +25,7 @@ const Footer = () => {
               <li className="mb-1">
                 <a
                   href="#"
-                  className="hover:text-gray-500 transition duration-300"
+                  className="hover:text-white transition duration-300"
                 >
                   Menu
                 </a>
@@ -32,7 +33,7 @@ const Footer = () => {
               <li className="mb-1">
                 <a
                   href="#"
-                  className="hover:text-gray-500 transition duration-300"
+                  className="hover:text-white transition duration-300"
                 >
                   About Us
                 </a>
@@ -40,24 +41,32 @@ const Footer = () => {
               <li className="mb-1">
                 <a
                   href="#"
-                  className="hover:text-gray-500 transition duration-300"
+                  className="hover:text-white transition duration-300"
                 >
                   Contact
                 </a>
               </li>
             </ul>
           </div>
-          <div className="md:ml-8">
+          <div className="md:w-1/3">
             <h3 className="text-lg font-semibold mb-2">Contact Us</h3>
-            <address>
+            <address className="not-italic text-gray-400">
               <p className="mb-1">Aniket Subhash Patil</p>
               <p className="mb-1">Kolhapur, India</p>
-              <p className="mb-1">Email: asp15299@gmail.com</p>
+              <p className="mb-1">
+                Email:{" "}
+                <a
+                  href="mailto:asp15299@gmail.com"
+                  className="hover:text-white transition duration-300"
+                >
+                  asp15299@gmail.com
+                </a>
+              </p>
             </address>
           </div>
         </div>
-        <div className="mt-6 text-center">
-          <p>&copy; 2023 Food Delivery. All rights reserved.</p>
+        <div className="mt-8 text-center text-gray-400">
+          <p>&copy; 2023 Indian Flavours. All rights reserved.</p>
         </div>
       </div>
     </footer>

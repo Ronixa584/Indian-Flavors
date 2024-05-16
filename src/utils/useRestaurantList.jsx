@@ -130,10 +130,23 @@ const useRestaurantList = ({ selectedCity ,children}) => {
   const [jsonData, setJsonData] = useState();
 
   // let city = useContext(cityContext);
-   console.log("Finally at Fetching " + selectedCity);
+ // console.log("Finally at Fetching " + selectedCity);
 
-  
-  
+  // // Helper function to save state to localStorage
+  // const saveStateToLocalStorage = (state) => {
+  //   localStorage.setItem("Location", state);
+  // };
+
+
+  // // Helper function to load state from localStorage
+  // const loadStateFromLocalStorage = () => {
+  //   const savedState = localStorage.getItem("Location");
+  //   return savedState;
+  // };
+  // // saveStateToLocalStorage(selectedCity);
+  // selectedCity = loadStateFromLocalStorage();
+ 
+
   //This will render page if we change the city
   useEffect(() => {
     // Check if selectedCity is defined before making the API call
@@ -145,7 +158,6 @@ const useRestaurantList = ({ selectedCity ,children}) => {
   //Two ways to fix
   //1 here write code to get log and lat of city
   //2 in context only store city with its naame and location coordinated
-
 
   //1
   function findCoordinates(cityName) {
@@ -159,14 +171,14 @@ const useRestaurantList = ({ selectedCity ,children}) => {
     }
   }
 
-  const cord = findCoordinates(selectedCity)
+  const cord = findCoordinates(selectedCity);
 
   async function getRestaurants(city) {
     if (!city) {
       return; // Return early if city is undefined
     }
 
-     console.log(cord.latitude);
+   // console.log(cord.latitude);
     const apiUrl = `https://foodfire.onrender.com/api/restaurants?lat=${cord.latitude}&lng=${cord.longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
 
     // const apiUrl = `https://foodfire.onrender.com/api/restaurants?lat=21.1702401&lng=72.83106070000001&page_type=DESKTOP_WEB_LISTING`;
@@ -180,18 +192,17 @@ const useRestaurantList = ({ selectedCity ,children}) => {
 
     // const apiUrl = `https://corsproxy.org/?https%3A%2F%2Fwww.swiggy.com%2Fdapi%2Frestaurants%2Flist%2Fv5%3Flat%3D${city.latitude}%26lng%3D${city.longitude}%26is-seo-homepage-enabled%3Dtrue%26page_type%3DDESKTOP_WEB_LISTING`;
 
-    console.log(apiUrl);
-   
+    //console.log(apiUrl);
 
     try {
       const data = await fetch(apiUrl);
       // console.log(data);
       const json = await data.json();
-      console.log(json);
+      //console.log(json);
 
-//       // console.log("Resturants List :",json);
-//       setJsonData(json);
-// console.log("Im here :" + data);
+      //       // console.log("Resturants List :",json);
+      //       setJsonData(json);
+      // console.log("Im here :" + data);
       //Dynamic Search from API
       let maxRestaurantsCount = 0;
       let maxRestaurantsCardIndex = -1;
@@ -233,7 +244,7 @@ const useRestaurantList = ({ selectedCity ,children}) => {
 
   // // Provide the fetched data through the context
   // return (
-    
+
   // );
 
   return [
@@ -242,7 +253,7 @@ const useRestaurantList = ({ selectedCity ,children}) => {
     filteredRestaurants,
     setFilteredRestaurants,
     allRestaurants,
-    <apiContext.Provider value={jsonData}>{children}</apiContext.Provider>
+    <apiContext.Provider value={jsonData}>{children}</apiContext.Provider>,
   ];
 };
 

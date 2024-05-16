@@ -19,7 +19,7 @@ const Body = () => {
 
   //New one to get city name using context
   useEffect(() => {
-    console.log("Finally " + location); // This will log the city whenever it changes
+    //console.log("Finally " + location); // This will log the city whenever it changes
   }, [location]); // Run this effect whenever city changes
 
   //Old one to get city name from URL
@@ -30,7 +30,7 @@ const Body = () => {
   // }
 
   let selectedCity = location;
-  console.log("Selected City is " + selectedCity);
+ // console.log("Selected City is " + selectedCity);
   
   const [
     searchInput,
@@ -63,7 +63,7 @@ const Body = () => {
   return allRestaurants.length === 0 ? (
     <Shimmer />
   ) : (
-    <div className="Body min-h-screen bg-gradient-to-r from-pink-400 to-yellow-500">
+    <div className="Body min-h-screen bg-gradient-to-r from-green-300 via-white-800 to-red-300">
       <MidCarousal />
 
       <div className="search-container p-5 flex flex-col md,sm:flex-row space-y-4 md,sm:space-y-0 md,sm:space-x-4 items-center">
