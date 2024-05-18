@@ -1,13 +1,15 @@
-import { createContext } from "react";
+import { createContext, useState, useContext } from "react";
 
-const apiContext = createContext({
-  user: {
-    name: "Dummy Name",
-    email: "dummy@email.com",
-  },
-});
+export const ApiContext = createContext();
 
-userContext.displayName = "UserContext"; //This is just for debugging purpose in React Dev TOOLs
+export const ApiProvider = ({ children }) => {
+  const [api, setAPI] = useState(null);
 
-export default apiContext;
+  return (
+    <ApiContext.Provider value={{ api, setAPI }}>
+      {children}
+    </ApiContext.Provider>
+  );
+};
 
+export const useAPI = () => useContext(ApiContext);

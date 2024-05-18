@@ -3,13 +3,10 @@ import logo from "../assets/img/logo.png";
 import { Link } from "react-router-dom";
 import useAuth from "../utils/useAuth";
 import { useSelector, useDispatch } from "react-redux";
-import { useState,useEffect } from "react";
+import { useEffect } from "react";
 import { cities } from "../contants";
 import { AiFillEnvironment } from "react-icons/ai";
-import { createContext } from "react";
 import { useCity } from "../utils/cityContext";
-
-export const cityContext = createContext("");
 
 const Title = () => {
   return (
@@ -51,26 +48,25 @@ const Header = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error);
     } else {
-     // console.log("Geolocation not supported");
+      // console.log("Geolocation not supported");
     }
   }
 
   function success(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    // setLocation({ latitude, longitude });
-   // console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
-    // setLocation(findCity(20, 75));
+    // setLocation(findCity(24, 75));
     setLocation(findCity(latitude, longitude));
-    localStorage.setItem("location", location);
-    // const savedLocation = localStorage.getItem("location");
-    // setLocation(savedLocation);
-   // console.log(location);
+
+    //To make a city persistant througout the refresh
+    if (location !== localStorage.getItem("location")) {
+      localStorage.setItem("location", location);
+    }
   }
 
   function error() {
-  //  console.log("Unable to retrieve your location");
+    //  console.log("Unable to retrieve your location");
   }
 
   function findCity(latitude, longitude) {

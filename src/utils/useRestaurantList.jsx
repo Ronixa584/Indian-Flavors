@@ -116,19 +116,21 @@
 //New serach as per city
 
 import { useState, useEffect, createContext,useContext } from "react";
-import { cityContext } from "../components/Header";
+// import { cityContext } from "../components/Header";
 import { cities } from "../contants";
+import { useAPI } from "./apiContext";
 
   // import {  } from "react";
 // import apiContext from "./apiContext";
-export const apiContext = createContext();
+// export const apiContext = createContext();
 
-const useRestaurantList = ({ selectedCity ,children}) => {
+const useRestaurantList = ({ selectedCity}) => {
   const [searchInput, setSearchInput] = useState("");
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [jsonData, setJsonData] = useState();
 
+  const { api, setAPI } = useAPI();
   // let city = useContext(cityContext);
  // console.log("Finally at Fetching " + selectedCity);
 
@@ -152,6 +154,8 @@ const useRestaurantList = ({ selectedCity ,children}) => {
     // Check if selectedCity is defined before making the API call
     if (selectedCity) {
       getRestaurants(selectedCity);
+      // console.log(jsonData);
+      
     }
   }, [selectedCity]);
 
@@ -199,9 +203,10 @@ const useRestaurantList = ({ selectedCity ,children}) => {
       // console.log(data);
       const json = await data.json();
       //console.log(json);
+      setAPI(json);
 
       //       // console.log("Resturants List :",json);
-      //       setJsonData(json);
+            // setJsonData(json);
       // console.log("Im here :" + data);
       //Dynamic Search from API
       let maxRestaurantsCount = 0;
@@ -252,8 +257,7 @@ const useRestaurantList = ({ selectedCity ,children}) => {
     setSearchInput,
     filteredRestaurants,
     setFilteredRestaurants,
-    allRestaurants,
-    <apiContext.Provider value={jsonData}>{children}</apiContext.Provider>,
+    allRestaurants
   ];
 };
 

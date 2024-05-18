@@ -13,8 +13,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import apiContext from "./utils/apiContext.jsx";
 import useRestaurantList from "./utils/useRestaurantList.jsx";
-import { cityContext } from "./components/Header.jsx";
+// import { cityContext } from "./components/Header.jsx";
 import { CityProvider } from "./utils/cityContext.jsx";
+import { ApiProvider } from "./utils/apiContext.jsx";
 
 export const AppLayout = () =>{
 return (
@@ -35,8 +36,10 @@ const appRouter = useAppRouter();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <cityContext>
+  <ApiProvider>
     <CityProvider>
       <RouterProvider router={appRouter} />
     </CityProvider>
+  </ApiProvider>
   // </cityContext>
 );

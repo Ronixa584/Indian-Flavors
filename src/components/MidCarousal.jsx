@@ -2,25 +2,12 @@ import React, { useRef, useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Carousal1 } from "./Carousal";
 import { cities } from "../contants";
-import { apiContext } from "../utils/useRestaurantList";
 import Shimmer3 from "./Shimmer3";
+import { useAPI } from "../utils/apiContext";
 
 const MidCarousal = () => {
   const [carausal1data, setcarausal1data] = useState(null);
   const [midcarousaltitle, setmidcarousaltitle] = useState(null);
-const { cityName } = useParams();
-  let selectedCity = cities.find((city) => city.name === cityName);
-
-  if (!selectedCity) {
-    selectedCity = cities.find((city) => city.name === "Pune");
-  }
-
-    let city = selectedCity;
-
-
-    const data = useContext(apiContext);
-
-    //console.log("Im here :"+data);
 
   const sliderRef = useRef(null);
 
@@ -32,25 +19,21 @@ const { cityName } = useParams();
     });
   };
 
+  const { api } = useAPI();
+
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  const apiUrl = `https://foodfire.onrender.com/api/restaurants?lat=${city.latitude}&lng=${city.longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
-
-  const fetchData = async () => {
-    const data = await fetch(apiUrl);
-    const json = await data.json();
-    
-    setcarausal1data(
-      json?.data?.cards[0]?.card?.card?.imageGridCards?.info ||
-        json?.data?.cards[1]?.card?.card?.imageGridCards?.info
-    );
-    setmidcarousaltitle(
-      json?.data?.cards[0]?.card?.card?.header?.title ||
-        json?.data?.cards[1]?.card?.card?.header?.title
-    );
-  };
+    if (api) {
+      const json = api;
+      setcarausal1data(
+        json?.data?.cards[0]?.card?.card?.imageGridCards?.info ||
+          json?.data?.cards[1]?.card?.card?.imageGridCards?.info
+      );
+      setmidcarousaltitle(
+        json?.data?.cards[0]?.card?.card?.header?.title ||
+          json?.data?.cards[1]?.card?.card?.header?.title
+      );
+    }
+  }, [api]);
 
   
   if (carausal1data === null) {
@@ -93,65 +76,65 @@ const { cityName } = useParams();
 export default MidCarousal;
 
 
-export const TopCarousal = () => {
-  const [carausaldata, setcarausaldata] = useState();
+// export const TopCarousal = () => {
+//   const [carausaldata, setcarausaldata] = useState();
 
-  const { cityName } = useParams();
-  // setCity(cityName);
-  // console.log(city);
-  let selectedCity = cities.find((city) => city.name === cityName);
+//   const { cityName } = useParams();
+//   // setCity(cityName);
+//   // console.log(city);
+//   let selectedCity = cities.find((city) => city.name === cityName);
 
-  if (!selectedCity) {
-    selectedCity = cities.find((city) => city.name === "Pune");
-  }
+//   if (!selectedCity) {
+//     selectedCity = cities.find((city) => city.name === "Pune");
+//   }
 
-  let city = selectedCity;
+//   let city = selectedCity;
 
-  const sliderRef = useRef(null);
+//   const sliderRef = useRef(null);
 
-  const scrollHandler = (scrollOffset) => {
-    const newScrollLeft = sliderRef.current.scrollLeft + scrollOffset;
-    sliderRef.current.scrollTo({
-      left: newScrollLeft,
-      behavior: "smooth",
-    });
-  };
+//   const scrollHandler = (scrollOffset) => {
+//     const newScrollLeft = sliderRef.current.scrollLeft + scrollOffset;
+//     sliderRef.current.scrollTo({
+//       left: newScrollLeft,
+//       behavior: "smooth",
+//     });
+//   };
 
-  useEffect(() => {
-    fetchData();
-  }, [city]);
+//   useEffect(() => {
+//     fetchData();
+//   }, [city]);
 
-  const apiUrl = `https://foodfire.onrender.com/api/restaurants?lat=${city.latitude}&lng=${city.longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
+//   const apiUrl = `https://foodfire.onrender.com/api/restaurants?lat=${city.latitude}&lng=${city.longitude}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`;
 
-  const fetchData = async () => {
-    const data = await fetch(apiUrl);
-    const json = await data.json();
+//   const fetchData = async () => {
+//     const data = await fetch(apiUrl);
+//     const json = await data.json();
 
-      setcarausaldata(json?.data?.cards[9]?.card?.card);
+//       setcarausaldata(json?.data?.cards[9]?.card?.card);
      
-      // console.log(json);
-      // console.log(carausaldata);
-  };
+//       // console.log(json);
+//       // console.log(carausaldata);
+//   };
 
-  if (carausaldata === null) {
-    return "Loading";
-  }
+//   if (carausaldata === null) {
+//     return "Loading";
+//   }
 
-  return (
-    <div className="slider" ref={sliderRef}>
-      <div className="flex justify-between flex-row items-center w-full">
-        <h2>Best offers for you</h2>
-        <div className="slider__nav">{/* buttons */}</div>
-      </div>
+//   return (
+//     <div className="slider" ref={sliderRef}>
+//       <div className="flex justify-between flex-row items-center w-full">
+//         <h2>Best offers for you</h2>
+//         <div className="slider__nav">{/* buttons */}</div>
+//       </div>
 
-      <div className="slider__content">
-        {carausaldata?.map((rest) => (
-          <Carousal0 key={rest.id} restData={rest} />
-        ))}
-      </div>
-    </div>
-  );
-};
+//       <div className="slider__content">
+//         {carausaldata?.map((rest) => (
+//           <Carousal0 key={rest.id} restData={rest} />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
 
 
 

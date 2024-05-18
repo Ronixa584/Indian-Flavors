@@ -37,7 +37,7 @@ const Cart = () => {
           <p className="text-gray-700 text-lg text-center">
             Your cart is empty
             <img
-              className="h-96 transition-transform transform hover:scale-105"
+              className="h-96 transition-transform transform"
               alt="LOGO"
               src={cartImg}
             ></img>
