@@ -54,7 +54,7 @@ const useRestaurantNames = ({ id_R, selectedCity }) => {
    // console.log(apiUrl);
     const data = await fetch(apiUrl);
     const json = await data.json();
-    // console.log("Resturants Menu List :", json);
+    console.log("Resturants Menu List :", json);
     // setRestaurantNames(json?.data?.cards[3]?.card?.card?.info);
 
     // const menuItemsData =

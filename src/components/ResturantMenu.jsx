@@ -38,7 +38,7 @@ const RestaurantMenu = () => {
   return restaurantNames.length === 0 ? (
     <Shimmer2 />
   ) : (
-    <div className="bg-white p-4 rounded-lg shadow-lg bg-gradient-to-r from-yellow-300 via-green-300 to-blue-300">
+    <div className="bg-white p-4 rounded-lg shadow-lg ">
       <div className="mb-4 flex justify-center items-center">
         <div className="w-1/2">
           <img
@@ -73,7 +73,7 @@ const RestaurantMenu = () => {
             {restaurantMenuNames.map((item) => (
               <li
                 key={item?.id}
-                className="w-64 p-4 m-4 bg-white rounded-lg shadow-lg hover:scale-95 transform transition-transform duration-300"
+                className="w-64 p-4 m-4 shadow-[inset_14px_13px_131px_5px_#f6ad55] rounded-lg hover:scale-95 transform transition-transform duration-300"
               >
                 <div>
                   <div className="flex justify-evenly">
