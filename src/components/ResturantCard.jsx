@@ -94,18 +94,3 @@ const ResturantCard = ({
 };
 
 export default ResturantCard;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -4,6 +4,7 @@ import { cities } from "../contants";
 const useRestaurantNames = ({ id_R, selectedCity }) => {
   const [restaurantNames, setRestaurantNames] = useState(null);
   const [restaurantMenuNames, setRestaurantMenuNames] = useState([]);
+  const [restaurantOffers, setRestaurantOffers] = useState([]);
   //IMPORTANT
   // const [restaurantNames, setRestaurantNames] = useState(null);
   // const [restaurantMenuNames, setRestaurantMenuNames] = useState([]);
@@ -51,10 +52,10 @@ const useRestaurantNames = ({ id_R, selectedCity }) => {
 
     // const apiUrl = `https://corsproxy.org/?https%3A%2F%2Fwww.swiggy.com%2Fdapi%2Fmenu%2Fpl%3Fpage-type%3DREGULAR_MENU%26complete-menu%3Dtrue%26lat%3D18.5204%26lng%3D73.8567%26restaurantId%3D${id_R}%26catalog_qa%3Dundefined%26submitAction%3DENTER`;
 
-   // console.log(apiUrl);
+    // console.log(apiUrl);
     const data = await fetch(apiUrl);
     const json = await data.json();
-    console.log("Resturants Menu List :", json);
+    // console.log("Resturants Menu List :", json);
     // setRestaurantNames(json?.data?.cards[3]?.card?.card?.info);
 
     // const menuItemsData =
@@ -111,10 +112,31 @@ const useRestaurantNames = ({ id_R, selectedCity }) => {
         uniqueMenuItems.push(item);
       }
     });
-    // setMenuItems(uniqueMenuItems);
     setRestaurantMenuNames(uniqueMenuItems);
+    // console.log("Resturants Menu List :", restaurantMenuNames);
+
+    //Now need to convert JSON data into Category based JSON data
+    
+
+
+
+    // Set Restaurant Offers
+    const offersData =
+      json?.data?.cards
+        ?.map((x) => x.card)
+        ?.find(
+          (x) =>
+            x &&
+            x.card["@type"] ===
+              "type.googleapis.com/swiggy.gandalf.widgets.v2.GridWidget"
+        )
+        ?.card?.gridElements?.infoWithStyle?.offers || null;
+    
+    setRestaurantOffers(offersData);
+
+    // console.log("Offers JSON Data :", restaurantOffers);
   }
-  return [restaurantNames, restaurantMenuNames];
+  return [restaurantNames, restaurantMenuNames,restaurantOffers, setRestaurantNames,setRestaurantMenuNames];
 };
 
 export default useRestaurantNames;

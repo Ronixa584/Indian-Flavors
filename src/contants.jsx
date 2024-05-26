@@ -4,6 +4,9 @@ export const IMG_CDN_URL =
 
   export const CARD_IMG_URL =
   "https://media-assets.swiggy.com/swiggy/image/upload/";
+
+  export const OFFER_LOGO_URL =
+    "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_20,h_20/";
     
 export const cities = [
   { name: "Pune", latitude: 18.5204, longitude: 73.8567 },

@@ -1,6 +1,6 @@
-import React from "react";
+import React,{useState} from "react";
 import { useParams } from "react-router-dom";
-import { IMG_CDN_URL } from "../contants";
+import { IMG_CDN_URL, OFFER_LOGO_URL } from "../contants";
 import Shimmer2 from "./Shimmer2";
 import useRestaurantNames from "../utils/useRestaurantNames";
 import { addItem } from "../utils/cartSlice";
@@ -10,7 +10,8 @@ import { useCity } from "../utils/cityContext";
 
 const RestaurantMenu = () => {
   const { id_R } = useParams();
-
+  const [quantities, setQuantities] = useState({});
+  
   // let selectedCity = cities.find((city1) => city1.name === city.city);
   // console.log("AT Menu :" + city.city);
 
@@ -20,10 +21,13 @@ const RestaurantMenu = () => {
   }, [location]); // Run this effect whenever city changes
 
   let selectedCity = location;
-  const [restaurantNames, restaurantMenuNames] = useRestaurantNames({
-    id_R,
-    selectedCity,
-  });
+  const [restaurantNames, restaurantMenuNames, restaurantOffers] =
+    useRestaurantNames({
+      id_R,
+      selectedCity,
+    });
+
+  console.log("Offers JSON Data :", restaurantOffers);
 
   const dispatch = useDispatch();
 
@@ -44,7 +48,7 @@ const RestaurantMenu = () => {
           <img
             src={IMG_CDN_URL + restaurantNames.cloudinaryImageId}
             alt={restaurantNames.name}
-            className="w-96 h-96 rounded-lg"
+            className="w-[600px] h-[500px] rounded-lg"
           />
         </div>
         <div className="ml-4">
@@ -63,68 +67,268 @@ const RestaurantMenu = () => {
         </div>
       </div>
 
-      <div className="resturantcard-list flex flex-wrap place-content-evenly ">
-        <h1 className="text-xl font-bold mb-2 flex justify-center items-center">
-          Menu
-        </h1>
-
-        <div className="">
-          <ul className="resturantcard-list flex flex-wrap place-content-evenly">
-            {restaurantMenuNames.map((item) => (
-              <li
-                key={item?.id}
-                className="w-64 p-4 m-4 shadow-[inset_14px_13px_131px_5px_#f6ad55] rounded-lg hover:scale-95 transform transition-transform duration-300"
-              >
+      {/* Offers Banner */}
+      <div className="Offers p-4 ">
+        <h2 className="text-2xl font-bold mb-4">Special Offers</h2>
+        <div className="flex overflow-x-auto space-x-4 scrollbar-hide">
+          {restaurantOffers.map((item, index) => (
+            <div
+              key={index}
+              className="flex-none w-50 m-3 bg-white p-4 shadow-lg rounded-lg transform transition-transform duration-300"
+            >
+              <div className="flex items-center m-4">
+                <img
+                  src={OFFER_LOGO_URL + item?.info.offerLogo}
+                  alt={item?.info.header}
+                  className=" object-cover rounded-full mr-4"
+                />
                 <div>
-                  <div className="flex justify-evenly">
-                    <span className="bg-amber-400 py-1 px-2 rounded-md">
-                      <b className="text-white">
-                        {item?.ratings.aggregatedRating.rating} stars
-                      </b>
-                    </span>
-                    <span className="text-gray-500">
-                      Rs.{(item?.price / 100).toFixed(2)}
-                    </span>
-                    <button
-                      onClick={() => addFoodItem(item)}
-                      className="bg-green-500 text-white py-1 px-3 rounded-full ml-2 hover:bg-green-600 transition duration-200"
-                    >
-                      Add
-                    </button>
-                  </div>
-                  <div className="mt-2">
-                    {/* <div className="text-gray-600">{item?.description}</div> */}
-                    <div className="p-4 m-4 rounded-lg shadow-lg">
-                      <img
-                        src={IMG_CDN_URL + item?.imageId}
-                        alt={item?.name}
-                        className="w-full h-48 object-cover"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-evenly">
-                    <span
-                      className={`font-semibold ${
-                        item?.itemAttribute.vegClassifier === "VEG"
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {item?.itemAttribute.vegClassifier === "VEG"
-                        ? "VEG"
-                        : "Non VEG"}
-                    </span>
-                    <span className="font-semibold">{item?.name}</span>
-                  </div>
+                  <h3 className="text-xl font-semibold">{item?.info.header}</h3>
+                  <span className="text-sm text-gray-500">
+                    {item?.info.offerTag}
+                  </span>
                 </div>
-              </li>
-            ))}
-          </ul>
+              </div>
+            </div>
+          ))}
         </div>
+      </div>
+
+      <div>
+        <h1 className="text-center text-2xl font-bold mb-4 mt-4">Restaurant Menu</h1>
+        <GroupedMenu menuItems={restaurantMenuNames} />
       </div>
     </div>
   );
 };
 
 export default RestaurantMenu;
+
+////Old Card Design
+
+// const GroupedMenu = ({ menuItems }) => {
+//   // Function to group products by category
+//   const groupByCategory = (items) => {
+//     return items.reduce((groups, item) => {
+//       const category = item.category;
+//       if (!groups[category]) {
+//         groups[category] = [];
+//       }
+//       groups[category].push(item);
+//       return groups;
+//     }, {});
+//   };
+
+//   const groupedItems = groupByCategory(menuItems);
+
+//   return (
+//     <div>
+//       {Object.keys(groupedItems).map((category) => (
+//         <div key={category}>
+//           <h2>{category}</h2>
+
+//           <ul className="resturantcard-list flex flex-wrap place-content-evenly">
+//             {groupedItems[category].map((item) => (
+//               <li
+//                 key={item?.id}
+//                 className="w-64 p-4 m-4 shadow-[inset_14px_13px_131px_5px_#f6ad55] rounded-lg hover:scale-95 transform transition-transform duration-300"
+//               >
+//                 <div>
+//                   <div className="flex justify-evenly">
+//                     <span className="bg-amber-400 py-1 px-2 rounded-md">
+//                       <b className="text-white">
+//                         {item?.ratings.aggregatedRating.rating} stars
+//                       </b>
+//                     </span>
+//                     <span className="text-gray-500">
+//                       Rs.{(item?.price / 100).toFixed(2)}
+//                     </span>
+//                     <button
+//                       onClick={() => addFoodItem(item)}
+//                       className="bg-green-500 text-white py-1 px-3 rounded-full ml-2 hover:bg-green-600 transition duration-200"
+//                     >
+//                       Add
+//                     </button>
+//                   </div>
+//                   <div className="mt-2">
+//                     {/* <div className="text-gray-600">{item?.description}</div> */}
+//                     <div className="p-4 m-4 rounded-lg shadow-lg">
+//                       <img
+//                         src={IMG_CDN_URL + item?.imageId}
+//                         alt={item?.name}
+//                         className="w-full h-48 object-cover"
+//                       />
+//                     </div>
+//                   </div>
+
+//                   <div className="flex justify-evenly">
+//                     <span
+//                       className={`font-semibold ${
+//                         item?.itemAttribute.vegClassifier === "VEG"
+//                           ? "text-green-500"
+//                           : "text-red-500"
+//                       }`}
+//                     >
+//                       {item?.itemAttribute.vegClassifier === "VEG"
+//                         ? "VEG"
+//                         : "Non VEG"}
+//                     </span>
+//                     <span className="font-semibold">{item?.name}</span>
+//                   </div>
+//                 </div>
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
+
+
+//New Card Design
+
+const GroupedMenu = ({ menuItems }) => {
+  const groupByCategory = (items) => {
+    return items.reduce((groups, item) => {
+      const category = item.category;
+      if (!groups[category]) {
+        groups[category] = [];
+      }
+      groups[category].push(item);
+      return groups;
+    }, {});
+  };
+
+  const groupedItems = groupByCategory(menuItems);
+
+  return (
+    <div className="flex flex-col justify-center items-center">
+      {Object.keys(groupedItems).map((category) => (
+        <Accordion key={category} title={category}>
+          <ul className="space-y-4 ">
+            {groupedItems[category].map((item) => (
+              <li
+                key={item?.id}
+                className="flex flex-col md:flex-row items-center md:justify-between bg-white p-4 rounded-lg transform transition-transform duration-300 shadow-[inset_0px_0px_68px_0px_#fbd38d]"
+              >
+                <div className="md:flex-1 md:pr-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-2xl">{item?.name}</span>
+                  </div>
+                  <div className="flex gap-2 items-center mb-2">
+                    <span
+                      className={`font-semibold ${
+                        item?.itemAttribute.vegClassifier === "VEG"
+                          ? "text-white bg-green-500 py-1 px-2 rounded-md"
+                          : "text-white bg-red-500 py-1 px-2 rounded-md"
+                      }`}
+                    >
+                      {item?.itemAttribute.vegClassifier === "VEG"
+                        ? "VEG"
+                        : "Non VEG"}
+                    </span>
+                    <span className="font-semibold">|</span>
+                    <span className="bg-amber-400 py-1 px-2 rounded-md">
+                      <b className="text-white">
+                        {item?.ratings.aggregatedRating.rating} stars
+                      </b>
+                    </span>
+                    <span className="font-semibold">|</span>
+                    <span className="text-white bg-red-500 py-1 px-2 rounded-md">
+                      Rs.{" "}
+                      {isNaN(item?.price)
+                        ? (39900 / 100).toFixed(2)
+                        : (item?.price / 100).toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="text-gray-600">{item?.description}</div>
+                </div>
+
+                <div className="relative mt-4 ">
+                  <img
+                    src={IMG_CDN_URL + item?.imageId}
+                    className="w-full md:w-48 h-48 object-cover rounded-lg"
+                  />
+                  <div className=""></div>
+                  <div className="absolute bottom-2 right-1/3 flex space-x-2">
+                    {1 == 2 ? (
+                      <div className="rounded-full right-auto">
+                        <button
+                          // onClick={() => removeFoodItem(item)}
+                          className="bg-red-500 text-white py-1 px-3  hover:bg-red-600 transition duration-200"
+                        >
+                          -
+                        </button>
+                        <span className="bg-white text-black py-1 px-3 ">
+                          {/* {quantities[item.id]} */}0
+                        </span>
+                        <button
+                          // onClick={() => addFoodItem(item)}
+                          className="bg-green-500 text-white py-1 px-3 hover:bg-green-600 transition duration-200"
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        // onClick={() => addFoodItem(item)}
+                        className="bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-600 transition duration-200 bg-opacity-100"
+                      >
+                        Add
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Accordion>
+      ))}
+    </div>
+  );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+const Accordion = ({ title, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border rounded-lg mb-4 w-[1000px]">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex justify-between items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 transition duration-200 focus:outline-none"
+      >
+        <h2 className="text-lg font-medium">{title}</h2>
+        <svg
+          className={`w-6 h-6 transform transition-transform duration-300 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </button>
+      <div className={`${isOpen ? "block" : "hidden"} p-4`}>{children}</div>
+    </div>
+  );
+};
