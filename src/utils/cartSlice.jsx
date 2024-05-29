@@ -50,11 +50,27 @@ const cartSlice = createSlice({
   reducers: {
     addItem: (state, action) => {
       toast("Successfully Added in Cart! Add More..");
-      state.items.push(action.payload);
+      const itemIndex = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (itemIndex !== -1) {
+        state.items[itemIndex].quantity += 1;
+      } else {
+        state.items.push({ ...action.payload, quantity: 1 });
+      }
       saveStateToLocalStorage(state);
     },
     removeItem: (state, action) => {
-      state.items.pop();
+      const itemIndex = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (itemIndex !== -1) {
+        if (state.items[itemIndex].quantity > 1) {
+          state.items[itemIndex].quantity -= 1;
+        } else {
+          state.items.splice(itemIndex, 1);
+        }
+      }
       saveStateToLocalStorage(state);
     },
     clearCart: (state) => {
@@ -67,6 +83,7 @@ const cartSlice = createSlice({
 export const { addItem, removeItem, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
+
 
 //Why this such type of export
 // So, i backend it stores slices as

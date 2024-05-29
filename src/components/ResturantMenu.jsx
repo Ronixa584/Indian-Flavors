@@ -1,48 +1,28 @@
-import React,{useState} from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { IMG_CDN_URL, OFFER_LOGO_URL } from "../contants";
-import Shimmer2 from "./Shimmer2";
-import useRestaurantNames from "../utils/useRestaurantNames";
-import { addItem } from "../utils/cartSlice";
-import { useDispatch } from "react-redux";
-import { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, removeItem } from "../utils/cartSlice";
 import { useCity } from "../utils/cityContext";
+import useRestaurantNames from "../utils/useRestaurantNames";
+import Shimmer2 from "./Shimmer2";
+import { IMG_CDN_URL, OFFER_LOGO_URL } from "../contants";
 
 const RestaurantMenu = () => {
   const { id_R } = useParams();
-  const [quantities, setQuantities] = useState({});
-  
-  // let selectedCity = cities.find((city1) => city1.name === city.city);
-  // console.log("AT Menu :" + city.city);
-
   const { location } = useCity();
-  useEffect(() => {
-    console.log("Finally at Menu " + location); // This will log the city whenever it changes
-  }, [location]); // Run this effect whenever city changes
-
-  let selectedCity = location;
   const [restaurantNames, restaurantMenuNames, restaurantOffers] =
-    useRestaurantNames({
-      id_R,
-      selectedCity,
-    });
+    useRestaurantNames({ id_R, selectedCity: location });
 
-  console.log("Offers JSON Data :", restaurantOffers);
-
-  const dispatch = useDispatch();
-
-  const addFoodItem = (item) => {
-    dispatch(addItem(item));
-  };
+  useEffect(() => {
+    console.log("Finally at Menu " + location);
+  }, [location]);
 
   if (!restaurantNames) {
     return <Shimmer2 />;
   }
 
-  return restaurantNames.length === 0 ? (
-    <Shimmer2 />
-  ) : (
-    <div className="bg-white p-4 rounded-lg shadow-lg ">
+  return (
+    <div className="bg-white p-4 rounded-lg shadow-lg">
       <div className="mb-4 flex justify-center items-center">
         <div className="w-1/2">
           <img
@@ -67,8 +47,7 @@ const RestaurantMenu = () => {
         </div>
       </div>
 
-      {/* Offers Banner */}
-      <div className="Offers p-4 ">
+      <div className="Offers p-4">
         <h2 className="text-2xl font-bold mb-4">Special Offers</h2>
         <div className="flex overflow-x-auto space-x-4 scrollbar-hide">
           {restaurantOffers.map((item, index) => (
@@ -80,7 +59,7 @@ const RestaurantMenu = () => {
                 <img
                   src={OFFER_LOGO_URL + item?.info.offerLogo}
                   alt={item?.info.header}
-                  className=" object-cover rounded-full mr-4"
+                  className="object-cover rounded-full mr-4"
                 />
                 <div>
                   <h3 className="text-xl font-semibold">{item?.info.header}</h3>
@@ -95,101 +74,32 @@ const RestaurantMenu = () => {
       </div>
 
       <div>
-        <h1 className="text-center text-2xl font-bold mb-4 mt-4">Restaurant Menu</h1>
+        <h1 className="text-center text-2xl font-bold mb-4 mt-4">
+          Restaurant Menu
+        </h1>
         <GroupedMenu menuItems={restaurantMenuNames} />
       </div>
     </div>
   );
 };
 
-export default RestaurantMenu;
-
-////Old Card Design
-
-// const GroupedMenu = ({ menuItems }) => {
-//   // Function to group products by category
-//   const groupByCategory = (items) => {
-//     return items.reduce((groups, item) => {
-//       const category = item.category;
-//       if (!groups[category]) {
-//         groups[category] = [];
-//       }
-//       groups[category].push(item);
-//       return groups;
-//     }, {});
-//   };
-
-//   const groupedItems = groupByCategory(menuItems);
-
-//   return (
-//     <div>
-//       {Object.keys(groupedItems).map((category) => (
-//         <div key={category}>
-//           <h2>{category}</h2>
-
-//           <ul className="resturantcard-list flex flex-wrap place-content-evenly">
-//             {groupedItems[category].map((item) => (
-//               <li
-//                 key={item?.id}
-//                 className="w-64 p-4 m-4 shadow-[inset_14px_13px_131px_5px_#f6ad55] rounded-lg hover:scale-95 transform transition-transform duration-300"
-//               >
-//                 <div>
-//                   <div className="flex justify-evenly">
-//                     <span className="bg-amber-400 py-1 px-2 rounded-md">
-//                       <b className="text-white">
-//                         {item?.ratings.aggregatedRating.rating} stars
-//                       </b>
-//                     </span>
-//                     <span className="text-gray-500">
-//                       Rs.{(item?.price / 100).toFixed(2)}
-//                     </span>
-//                     <button
-//                       onClick={() => addFoodItem(item)}
-//                       className="bg-green-500 text-white py-1 px-3 rounded-full ml-2 hover:bg-green-600 transition duration-200"
-//                     >
-//                       Add
-//                     </button>
-//                   </div>
-//                   <div className="mt-2">
-//                     {/* <div className="text-gray-600">{item?.description}</div> */}
-//                     <div className="p-4 m-4 rounded-lg shadow-lg">
-//                       <img
-//                         src={IMG_CDN_URL + item?.imageId}
-//                         alt={item?.name}
-//                         className="w-full h-48 object-cover"
-//                       />
-//                     </div>
-//                   </div>
-
-//                   <div className="flex justify-evenly">
-//                     <span
-//                       className={`font-semibold ${
-//                         item?.itemAttribute.vegClassifier === "VEG"
-//                           ? "text-green-500"
-//                           : "text-red-500"
-//                       }`}
-//                     >
-//                       {item?.itemAttribute.vegClassifier === "VEG"
-//                         ? "VEG"
-//                         : "Non VEG"}
-//                     </span>
-//                     <span className="font-semibold">{item?.name}</span>
-//                   </div>
-//                 </div>
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-
-
-//New Card Design
-
 const GroupedMenu = ({ menuItems }) => {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+
+  const getItemQuantity = (id) => {
+    const cartItem = cartItems.find((cartItem) => cartItem.id === id);
+    return cartItem ? cartItem.quantity : 0;
+  };
+
+  const handleAddItem = (item) => {
+    dispatch(addItem(item));
+  };
+
+  const handleRemoveItem = (item) => {
+    dispatch(removeItem(item));
+  };
+
   const groupByCategory = (items) => {
     return items.reduce((groups, item) => {
       const category = item.category;
@@ -207,99 +117,93 @@ const GroupedMenu = ({ menuItems }) => {
     <div className="flex flex-col justify-center items-center">
       {Object.keys(groupedItems).map((category) => (
         <Accordion key={category} title={category}>
-          <ul className="space-y-4 ">
-            {groupedItems[category].map((item) => (
-              <li
-                key={item?.id}
-                className="flex flex-col md:flex-row items-center md:justify-between bg-white p-4 rounded-lg transform transition-transform duration-300 shadow-[inset_0px_0px_68px_0px_#fbd38d]"
-              >
-                <div className="md:flex-1 md:pr-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-2xl">{item?.name}</span>
+          <ul className="space-y-4">
+            {groupedItems[category].map((item) => {
+              const quantity = getItemQuantity(item.id);
+              return (
+                <li
+                  key={item?.id}
+                  className="flex flex-col md:flex-row items-center md:justify-between bg-white p-4 rounded-lg transform transition-transform duration-300 shadow-[inset_0px_0px_68px_0px_#fbd38d]"
+                >
+                  <div className="md:flex-1 md:pr-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-bold text-2xl">{item?.name}</span>
+                    </div>
+                    <div className="flex gap-2 items-center mb-2">
+                      <span
+                        className={`font-semibold ${
+                          item?.itemAttribute.vegClassifier === "VEG"
+                            ? "text-white bg-green-500 py-1 px-2 rounded-md"
+                            : "text-white bg-red-500 py-1 px-2 rounded-md"
+                        }`}
+                      >
+                        {item?.itemAttribute.vegClassifier === "VEG"
+                          ? "VEG"
+                          : "Non VEG"}
+                      </span>
+                      <span className="font-semibold">|</span>
+                      <span className="bg-amber-400 py-1 px-2 rounded-md">
+                        <b className="text-white">
+                          {item?.ratings.aggregatedRating.rating} stars
+                        </b>
+                      </span>
+                      <span className="font-semibold">|</span>
+                      <span className="text-white bg-red-500 py-1 px-2 rounded-md">
+                        Rs.{" "}
+                        {isNaN(item?.price)
+                          ? (39900 / 100).toFixed(2)
+                          : (item?.price / 100).toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="text-gray-600">{item?.description}</div>
                   </div>
-                  <div className="flex gap-2 items-center mb-2">
-                    <span
-                      className={`font-semibold ${
-                        item?.itemAttribute.vegClassifier === "VEG"
-                          ? "text-white bg-green-500 py-1 px-2 rounded-md"
-                          : "text-white bg-red-500 py-1 px-2 rounded-md"
-                      }`}
-                    >
-                      {item?.itemAttribute.vegClassifier === "VEG"
-                        ? "VEG"
-                        : "Non VEG"}
-                    </span>
-                    <span className="font-semibold">|</span>
-                    <span className="bg-amber-400 py-1 px-2 rounded-md">
-                      <b className="text-white">
-                        {item?.ratings.aggregatedRating.rating} stars
-                      </b>
-                    </span>
-                    <span className="font-semibold">|</span>
-                    <span className="text-white bg-red-500 py-1 px-2 rounded-md">
-                      Rs.{" "}
-                      {isNaN(item?.price)
-                        ? (39900 / 100).toFixed(2)
-                        : (item?.price / 100).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="text-gray-600">{item?.description}</div>
-                </div>
 
-                <div className="relative mt-4 ">
-                  <img
-                    src={IMG_CDN_URL + item?.imageId}
-                    className="w-full md:w-48 h-48 object-cover rounded-lg"
-                  />
-                  <div className=""></div>
-                  <div className="absolute bottom-2 right-1/3 flex space-x-2">
-                    {1 == 2 ? (
-                      <div className="rounded-full right-auto">
-                        <button
-                          // onClick={() => removeFoodItem(item)}
-                          className="bg-red-500 text-white py-1 px-3  hover:bg-red-600 transition duration-200"
-                        >
-                          -
-                        </button>
-                        <span className="bg-white text-black py-1 px-3 ">
-                          {/* {quantities[item.id]} */}0
-                        </span>
-                        <button
-                          // onClick={() => addFoodItem(item)}
-                          className="bg-green-500 text-white py-1 px-3 hover:bg-green-600 transition duration-200"
-                        >
-                          +
-                        </button>
+                  <div className="relative mt-4">
+                    <img
+                      src={IMG_CDN_URL + item?.imageId}
+                      className="w-full md:w-48 h-48 object-cover rounded-lg"
+                    />
+                    {quantity > 0 ? (
+                      <div className="absolute bottom-1 right-1/4 flex space-x-2">
+                        <div className="rounded-full flex justify-center items-center">
+                          <button
+                            onClick={() => handleRemoveItem(item)}
+                            className="bg-red-500 text-white py-1 px-3 hover:bg-red-600 transition duration-200 flex justify-center items-center"
+                          >
+                            -
+                          </button>
+                          <span className="bg-white text-black py-1 px-3 flex justify-center items-center">
+                            {quantity}
+                          </span>
+                          <button
+                            onClick={() => handleAddItem(item)}
+                            className="bg-green-500 text-white py-1 px-3 hover:bg-green-600 transition duration-200 flex justify-center items-center"
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
                     ) : (
-                      <button
-                        // onClick={() => addFoodItem(item)}
-                        className="bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-600 transition duration-200 bg-opacity-100"
-                      >
-                        Add
-                      </button>
+                      <div className="absolute bottom-1 right-1/3 flex space-x-2">
+                        <button
+                          onClick={() => handleAddItem(item)}
+                          className="bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-600 transition duration-200"
+                        >
+                          Add
+                        </button>
+                      </div>
                     )}
                   </div>
-                </div>
-              </li>
-            ))}
+                  {/* </div> */}
+                </li>
+              );
+            })}
           </ul>
         </Accordion>
       ))}
     </div>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
 
 const Accordion = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -332,3 +236,5 @@ const Accordion = ({ title, children }) => {
     </div>
   );
 };
+
+export default RestaurantMenu;
