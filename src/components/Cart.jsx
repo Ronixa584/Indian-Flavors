@@ -54,7 +54,20 @@ const Cart = () => {
 
 export default Cart;
 
+// import { useDispatch } from "react-redux";
+import { addItem, removeItem } from "../utils/cartSlice";
+
 const Bill = ({ cartItems }) => {
+  const dispatch = useDispatch();
+
+  const handleAddItem = (item) => {
+    dispatch(addItem(item));
+  };
+
+  const handleRemoveItem = (item) => {
+    dispatch(removeItem(item));
+  };
+
   const calculateTotal = () => {
     return cartItems.reduce(
       (total, item) =>
@@ -82,7 +95,21 @@ const Bill = ({ cartItems }) => {
             {cartItems.map((item) => (
               <tr key={item.id} className="border-t">
                 <td className="py-2 px-4">{item.name}</td>
-                <td className="py-2 px-4 text-center">{item.quantity}</td>
+                <td className="py-2 px-4 text-center">
+                  <button
+                    onClick={() => handleRemoveItem(item)}
+                    className="px-2 py-1 bg-red-500 text-white rounded-md"
+                  >
+                    -
+                  </button>
+                  <span className="mx-2">{item.quantity}</span>
+                  <button
+                    onClick={() => handleAddItem(item)}
+                    className="px-2 py-1 bg-green-500 text-white rounded-md"
+                  >
+                    +
+                  </button>
+                </td>
                 <td className="py-2 px-4 text-right">
                   {(isNaN(item.price) ? 399 : item.price)} Rs
                 </td>
@@ -111,3 +138,6 @@ const Bill = ({ cartItems }) => {
     </div>
   );
 };
+
+// export default Bill;
+

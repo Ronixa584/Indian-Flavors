@@ -1,6 +1,14 @@
 import { IMG_CDN_URL } from "../contants";
+import { useDispatch, useSelector } from "react-redux";
+import { removeItem } from "../utils/cartSlice";
 
 const FoodItem = ({ name, description, imageId, price, itemAttribute }) => {
+  const cartItems = useSelector((store) => store.cart.items);
+    const dispatch = useDispatch();
+
+  const handleRemoveItem = (id) => {
+    dispatch(removeItem(id));
+    };
   
   return (
     <div className="w-64 p-4 m-4 bg-white rounded-lg shadow-lg hover:scale-95 transform transition-transform duration-300">
@@ -19,7 +27,7 @@ const FoodItem = ({ name, description, imageId, price, itemAttribute }) => {
           </span> */}
           <div className=" flex items-center justify-between">
             <span className="bg-green-500 text-white py-1 px-2 rounded-md">
-             {price===undefined ? 399 : price / 100} Rs
+              {price === undefined ? 399 : price / 100} Rs
             </span>
 
             <span
@@ -30,6 +38,15 @@ const FoodItem = ({ name, description, imageId, price, itemAttribute }) => {
               }`}
             >
               {itemAttribute.vegClassifier === "VEG" ? "VEG" : "Non VEG"}
+            </span>
+
+            <span>
+              <button
+                onClick={handleRemoveItem(cartItems)}
+                className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md mt-2 transition duration-300"
+              >
+                Remove
+              </button>
             </span>
           </div>
         </div>
